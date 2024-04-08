@@ -25,7 +25,10 @@
     const derivationPath = new Uint32Array(DERIVATION_PATH_ARRAY);
 
     // You can verify the signature over at https://etherscan.io/verifiedSignatures#
-    const formattedMessage = `\x19Ethereum Signed Message:\n${message.length}${message}`;
+    const formattedMessage =
+      $userData?.sigAlgo === SignatureAlgorithmName.ECDSA
+        ? `\x19Ethereum Signed Message:\n${message.length}${message}`
+        : message;
 
     const response = await fetch(
       `/api/sign/${$userData.userId}/${$userData.sigAlgo}/${formattedMessage}/${JSON.stringify(DERIVATION_PATH_ARRAY)}`
@@ -54,15 +57,23 @@
 
 <div class="keygen">
   <textarea class="textarea" rows="3" placeholder="What would you like to sign?" bind:value={message} />
-  <div>
+  <div class="flex justify-between">
     <button type="button" class="variant-filled btn m-3" on:click={signMessage}>
       <span>📝</span>
       <span>Sign!</span>
     </button>
+    <a
+      href="https://etherscan.io/verifiedSignatures"
+      target="_blank"
+      title="Verify on Etherscan"
+      class="anchor text-sm"
+    >
+      Verify this signature on Etherscan!
+    </a>
   </div>
   {#if messageSignature}
     <div>
-      <CodeBlock language="text" code={messageSignature}></CodeBlock>
+      <CodeBlock language="plaintext" code={`0x${messageSignature}`}></CodeBlock>
     </div>
   {/if}
 </div>

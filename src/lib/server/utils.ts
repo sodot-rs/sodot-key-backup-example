@@ -4,7 +4,6 @@ import type { EcdsaKeygenResult, Ed25519KeygenResult } from '@sodot/sodot-node-s
 import { Ecdsa, Ed25519 } from '@sodot/sodot-node-sdk-demo';
 import 'dotenv/config';
 
-// TODO: use SvelteKit built-in env management - import {API_KEY} from '$env/static/private'
 export const API_KEY: string = process.env.API_KEY || '';
 
 const mpcSigners = {

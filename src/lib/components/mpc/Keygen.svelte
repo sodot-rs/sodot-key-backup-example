@@ -83,10 +83,16 @@
               <Avatar initials={badge} fontSize={250} />
               <span class="w-5/6 flex-auto">
                 <dt><strong>{title}</strong></dt>
-                <dd class="text-sm"><div class="card text-wrap" data-clipboard="keygen-info-{i}">{value}</div></dd>
-                <button type="button" class="variant-filled btn-sm" use:clipboard={{ element: `keygen-info-${i}` }}
-                  >Copy</button
-                >
+                <dd class="text-sm">
+                  <div class="card justify-between text-wrap" data-clipboard="keygen-info-{i}">
+                    <span class="truncate">{value}</span>
+                    <button
+                      type="button"
+                      class="variant-filled btn btn-sm rounded-2xl"
+                      use:clipboard={{ element: `keygen-info-${i}` }}>Copy</button
+                    >
+                  </div>
+                </dd>
               </span>
             </div>
           {/if}

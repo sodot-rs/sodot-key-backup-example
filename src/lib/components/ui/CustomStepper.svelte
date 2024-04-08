@@ -23,7 +23,7 @@
 </script>
 
 <div class="flex h-screen justify-center">
-  <div class="bg-surface-backdrop-token m-5 h-1/2 w-1/2 rounded-3xl p-5">
+  <div class="bg-surface-backdrop-token m-5 h-3/5 w-1/2 rounded-3xl p-5">
     <Stepper on:complete={celebrate} regionContent="flex flex-col ">
       <slot />
     </Stepper>
