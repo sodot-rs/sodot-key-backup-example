@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import logo from '$lib/assets/google_g_icon.svg';
+  import logo from '$lib/assets/google-g-icon.svg';
   import { isSignedIn } from '$lib/stores/cloud';
 
   const DRIVE_DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
@@ -70,12 +70,17 @@
   <script defer async src="https://accounts.google.com/gsi/client" on:load={gsiLoaded}></script>
 </svelte:head>
 
-<div class="flex flex-col">
-  <button type="button" class="variant-filled btn-icon btn-icon-xl m-3" on:click={signIn}>
-    <img alt="Sign-in with Google" src={logo} />
-  </button>
+<div>
+  <div class="relative m-3 inline-block">
+    {#if $isSignedIn}
+      <span class="badge-icon absolute -right-0 -top-0 z-10 text-lg">✅</span>
+    {/if}
+    <button type="button" class="variant-filled btn-icon btn-icon-xl m-1" on:click={signIn}>
+      <img alt="Sign-in with Google" src={logo} />
+    </button>
+  </div>
   <div>
-    <span class="text-xl"><strong>Backed up?</strong> {$isSignedIn ? '✅' : '❌'}</span>
+    <span class="text-xl"><strong>Backup method:</strong> {$isSignedIn ? 'Google Drive' : 'None'}</span>
   </div>
 </div>
 

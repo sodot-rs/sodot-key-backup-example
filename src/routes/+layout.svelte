@@ -1,7 +1,7 @@
 <script>
   import { AppBar, AppShell, LightSwitch, Modal, Toast } from '@skeletonlabs/skeleton';
-  import logoLight from '$lib/assets/sodot_color_logo_light.svg';
-  import logoDark from '$lib/assets/sodot_color_logo_dark.svg';
+  import logoLight from '$lib/assets/sodot-color-logo-light.svg';
+  import logoDark from '$lib/assets/sodot-color-logo-dark.svg';
   import '../app.pcss';
   import { initializeStores } from '@skeletonlabs/skeleton';
   import SidebarLeft from './SidebarLeft.svelte';
