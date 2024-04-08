@@ -17,11 +17,13 @@
   let selectedSignatureAlgorithm: SignatureAlgorithmName = SignatureAlgorithmName.ECDSA;
   $: mpcSigner = mpcSigners[selectedSignatureAlgorithm];
 
-  $: publicKey = hexlify(
-    ($userData?.sigAlgo === SignatureAlgorithmName.ECDSA
-      ? $userData?.derivedPubkey.serializeCompressed()
-      : $userData?.derivedPubkey)!
-  );
+  $: publicKey =
+    $userData?.derivedPubkey &&
+    hexlify(
+      $userData?.sigAlgo === SignatureAlgorithmName.ECDSA
+        ? $userData?.derivedPubkey?.serializeCompressed()
+        : $userData?.derivedPubkey
+    );
 
   $: evmAddress =
     $userData?.sigAlgo === SignatureAlgorithmName.ECDSA
