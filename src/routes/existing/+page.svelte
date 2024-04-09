@@ -3,47 +3,65 @@
   import GDrive from '$lib/components/backup/GDrive.svelte';
   import Keygen from '$lib/components/mpc/Keygen.svelte';
   import Signer from '$lib/components/mpc/Signer.svelte';
-  import { getBackupFile, isSignedIn, userData } from '$lib/stores/cloud';
+  import { getBackupFile, isBackupDataInvalid, isSignedIn, userData } from '$lib/stores/cloud';
   import { Step, getModalStore } from '@skeletonlabs/skeleton';
   import type { ModalSettings } from '@skeletonlabs/skeleton';
   import { goto } from '$app/navigation';
 
   const modalStore = getModalStore();
-  let noExistingBackup: boolean | null = null;
-
-  $: if (noExistingBackup === true) {
-    modalStore.trigger(modal);
-  }
+  let backupExists: boolean | null = null;
 
   $: if ($isSignedIn) {
     getBackupFile().then((value) => {
       if (value === null) {
-        noExistingBackup = true;
+        backupExists = false;
+        modalStore.trigger(keyNotFoundModal);
+      } else if (isBackupDataInvalid(value)) {
+        backupExists = false;
+        modalStore.trigger(invalidBackupModal);
       } else {
-        noExistingBackup = false;
+        backupExists = true;
         $userData = value;
       }
     });
   }
 
-  const modal: ModalSettings = {
+  const keyNotFoundModal: ModalSettings = {
     type: 'confirm',
     title: "Couldn't find your key",
-    body: "We couldn't find an existing key in your chosen backup service.\nWould you like to create a new wallet?",
+    body:
+      "We couldn't find an existing key in your chosen backup service.\n" + 'Would you like to create a new wallet?',
     buttonTextCancel: 'Try a different backup method',
     buttonTextConfirm: 'Create a new wallet',
-    response: async (r: boolean) => {
-      if (r) {
+    response: async (confirmed: boolean) => {
+      if (confirmed) {
         await goto('/new');
       } else {
-        noExistingBackup = null;
+        backupExists = false;
+      }
+    },
+  };
+
+  const invalidBackupModal: ModalSettings = {
+    type: 'confirm',
+    title: 'Invalid Backup Detected',
+    body:
+      'The backup connected to your account is invalid!\n' +
+      "This demo server doesn't keep secret shares for long by design, but we will regenerate a new one for you!",
+    buttonTextCancel: 'Try a different backup method',
+    buttonTextConfirm: 'Create a new wallet',
+    response: async (confirmed: boolean) => {
+      if (confirmed) {
+        await goto('/new');
+      } else {
+        backupExists = false;
       }
     },
   };
 </script>
 
 <CustomStepper>
-  <Step locked={!$isSignedIn || !!noExistingBackup}>
+  <Step locked={!$isSignedIn || !backupExists}>
     <svelte:fragment slot="header">Recover Your Key</svelte:fragment>
     <p class="text-l">Please choose your backup method in order to recover your key.</p>
     <GDrive />

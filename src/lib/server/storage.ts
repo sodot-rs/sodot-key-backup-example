@@ -8,6 +8,7 @@ const CACHE_ITEM_TTL = 1000 * 60 * 60; // This is a demo server, so we'll keep t
 const DEFAULT_CACHE_CONFIG = {
   max: MAX_ITEMS_IN_CACHE,
   ttl: CACHE_ITEM_TTL,
+  updateAgeOnGet: true,
 };
 
 type KeygenInitResultCacheKey = `UID:${string}-SIGALG:${SignatureAlgorithmName}-ROOMID:${string}`;
