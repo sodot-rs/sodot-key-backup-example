@@ -8,10 +8,6 @@
 </script>
 
 <AppRail background="bg-surface-backdrop-token opacity-85" width="w-3/5">
-  <!-- <svelte:fragment slot="lead"> -->
-  <!--   <AppRailAnchor href="/">(icon)</AppRailAnchor> -->
-  <!-- </svelte:fragment> -->
-  <!-- --- -->
   <AppRailAnchor
     href="/new"
     bind:group={currentTile}

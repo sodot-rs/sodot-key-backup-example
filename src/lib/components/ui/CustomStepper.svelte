@@ -1,8 +1,12 @@
 <script lang="ts">
+  import { isMobile } from '$lib/stores/ui';
   import { Stepper, getToastStore } from '@skeletonlabs/skeleton';
   import confetti from 'canvas-confetti';
 
   const toastStore = getToastStore();
+
+  $: width = $isMobile ? 'w-5/6' : 'w-1/2';
+  $: height = $isMobile ? 'h-3/4' : 'h-3/5';
 
   function celebrate() {
     confetti({
@@ -23,7 +27,7 @@
 </script>
 
 <div class="flex h-screen justify-center">
-  <div class="bg-surface-backdrop-token m-5 h-3/5 w-1/2 rounded-3xl p-5">
+  <div class="variant-ghost-surface m-5 rounded-3xl p-5 {height} {width}">
     <Stepper on:complete={celebrate} regionContent="flex flex-col ">
       <slot />
     </Stepper>

@@ -80,12 +80,12 @@
         {#each displayedValues as { title, value, badge }, i}
           {#if value !== null}
             <div>
-              <Avatar initials={badge} fontSize={250} />
+              <Avatar initials={badge} fontSize={250} width="w-1/12" />
               <span class="w-5/6 flex-auto">
                 <dt><strong>{title}</strong></dt>
                 <dd class="text-sm">
-                  <div class="card justify-between text-wrap" data-clipboard="keygen-info-{i}">
-                    <span class="truncate">{value}</span>
+                  <div class="card justify-between text-wrap">
+                    <span class="truncate" data-clipboard="keygen-info-{i}">{value}</span>
                     <button
                       type="button"
                       class="variant-filled btn btn-sm rounded-2xl"

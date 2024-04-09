@@ -72,7 +72,7 @@
     </a>
   </div>
   {#if messageSignature}
-    <div>
+    <div class="m-3">
       <CodeBlock language="plaintext" code={`0x${messageSignature}`}></CodeBlock>
     </div>
   {/if}
