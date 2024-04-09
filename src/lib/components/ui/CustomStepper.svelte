@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isMobile } from '$lib/stores/ui';
+  import { isMobile } from '$lib/stores/app';
   import { Stepper, getToastStore } from '@skeletonlabs/skeleton';
   import confetti from 'canvas-confetti';
 

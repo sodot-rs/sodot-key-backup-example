@@ -7,6 +7,7 @@
   import type { BackupData } from '$lib/stores/cloud';
   import { Avatar, ProgressBar, clipboard } from '@skeletonlabs/skeleton';
   import { computeAddress, hexlify } from 'ethers';
+  import { selectedSignatureAlgorithm } from '$lib/stores/app';
 
   const userId = crypto.randomUUID();
   const mpcSigners = {
@@ -14,8 +15,7 @@
     [SignatureAlgorithmName.ED25519]: new Ed25519(),
   } as const;
 
-  let selectedSignatureAlgorithm: SignatureAlgorithmName = SignatureAlgorithmName.ECDSA;
-  $: mpcSigner = mpcSigners[selectedSignatureAlgorithm];
+  $: mpcSigner = mpcSigners[$selectedSignatureAlgorithm];
 
   $: publicKey =
     $userData?.derivedPubkey &&
@@ -32,7 +32,7 @@
 
   async function initMPCKeygen() {
     const initKeygenResult = await mpcSigner.initKeygen();
-    const response = await fetch(`/api/keygen/${userId}/${selectedSignatureAlgorithm}/${initKeygenResult.keygenId}`);
+    const response = await fetch(`/api/keygen/${userId}/${$selectedSignatureAlgorithm}/${initKeygenResult.keygenId}`);
     const responseData = await response.json();
     const result = await mpcSigner.keygen(responseData.roomId, N, T, initKeygenResult, [responseData.keygenId]);
     const derivationPath = new Uint32Array(DERIVATION_PATH_ARRAY);
@@ -40,7 +40,7 @@
     $userData = {
       keygenResult: result,
       userId,
-      sigAlgo: selectedSignatureAlgorithm,
+      sigAlgo: $selectedSignatureAlgorithm,
       derivedPubkey,
     } as BackupData;
   }
@@ -48,7 +48,7 @@
   $: displayedValues = [
     {
       title: 'Signature Schema',
-      value: selectedSignatureAlgorithm,
+      value: $selectedSignatureAlgorithm,
       badge: '📝',
     },
     {

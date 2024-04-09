@@ -6,7 +6,7 @@
   import { initializeStores } from '@skeletonlabs/skeleton';
   import SidebarLeft from '$lib/components/ui/Sidebar.svelte';
   import NavigationTabs from '$lib/components/ui/NavigationTabs.svelte';
-  import { isMobile } from '$lib/stores/ui';
+  import { isMobile } from '$lib/stores/app';
   import { onMount } from 'svelte';
 
   initializeStores();
@@ -25,7 +25,7 @@
 </script>
 
 <Toast />
-<Modal />
+<Modal regionFooter="flex m-3 {$isMobile ? 'flex-col-reverse' : 'justify-between'}" />
 <AppShell>
   <svelte:fragment slot="header">
     <AppBar>
