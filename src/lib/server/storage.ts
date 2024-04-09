@@ -1,6 +1,5 @@
 import type { SignatureAlgorithmName } from '$lib/types';
 import TTLCache from '@isaacs/ttlcache';
-import type { EcdsaInitKeygenResult, Ed25519InitKeygenResult } from '@sodot/sodot-node-sdk-demo';
 import { EcdsaKeygenResult, Ed25519KeygenResult } from '@sodot/sodot-node-sdk-demo';
 
 const MAX_ITEMS_IN_CACHE = 10_000;
@@ -10,20 +9,6 @@ const DEFAULT_CACHE_CONFIG = {
   ttl: CACHE_ITEM_TTL,
   updateAgeOnGet: true,
 };
-
-type KeygenInitResultCacheKey = `UID:${string}-SIGALG:${SignatureAlgorithmName}-ROOMID:${string}`;
-export const keygenInitResultCache = new TTLCache<
-  KeygenInitResultCacheKey,
-  EcdsaInitKeygenResult | Ed25519InitKeygenResult
->(DEFAULT_CACHE_CONFIG);
-
-export function generateKeygenInitResultCacheKey(
-  userId: string,
-  sigAlgo: SignatureAlgorithmName,
-  roomId: string
-): KeygenInitResultCacheKey {
-  return `UID:${userId}-SIGALG:${sigAlgo}-ROOMID:${roomId}`;
-}
 
 type ServerShareCacheKey = `UID:${string}-SIGALG:${SignatureAlgorithmName}`;
 export const serverShareCache = new TTLCache<string, EcdsaKeygenResult | Ed25519KeygenResult>(DEFAULT_CACHE_CONFIG);
