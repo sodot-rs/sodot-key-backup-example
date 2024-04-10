@@ -31,9 +31,12 @@
       : null;
 
   async function initMPCKeygen() {
+    // Create the local initial key, used to create a secure communication channel.
     const initKeygenResult = await mpcSigner.initKeygen();
+    // Initialize key generation with the server - get the roomId.
     const response = await fetch(`/api/keygen/${userId}/${$selectedSignatureAlgorithm}/${initKeygenResult.keygenId}`);
     const responseData = await response.json();
+    // Sign together!
     const result = await mpcSigner.keygen(responseData.roomId, N, T, initKeygenResult, [responseData.keygenId]);
     const derivationPath = new Uint32Array(DERIVATION_PATH_ARRAY);
     const derivedPubkey = await mpcSigner.derivePubkey(result, derivationPath);
@@ -47,7 +50,7 @@
 
   $: displayedValues = [
     {
-      title: 'Signature Schema',
+      title: 'Signature Scheme',
       value: $selectedSignatureAlgorithm,
       badge: '📝',
     },

@@ -22,17 +22,12 @@ async function callSign({ sigAlgo, userId, roomId, message, derivationPath }: Ca
   // Get the server's secret share. We know that it'll be valid by now.
   const serverShareCacheKey = generateServerShareCacheKey(userId, sigAlgo);
   const serverShare = serverShareCache.get(serverShareCacheKey)!;
-  let pubkey = await mpcSigner.derivePubkey(serverShare, derivationPath);
   let formattedMessage: string | MessageHash = message;
   if (sigAlgo === SignatureAlgorithmName.ECDSA) {
-    pubkey = (pubkey as EcdsaPublicKey).serializeCompressed();
     formattedMessage = MessageHash.keccak256(formattedMessage);
   }
   // Using the same roomId as the client, we both try and sign together.
-  const signature = await mpcSigner.sign(roomId, serverShare, formattedMessage, derivationPath);
-  console.log(
-    `Server sign result - PUB:${pubkey} ;; SIG:${sigAlgo === SignatureAlgorithmName.ECDSA ? signature.der : signature}`
-  );
+  await mpcSigner.sign(roomId, serverShare, formattedMessage, derivationPath);
 }
 
 export const GET: RequestHandler = async ({ params }) => {

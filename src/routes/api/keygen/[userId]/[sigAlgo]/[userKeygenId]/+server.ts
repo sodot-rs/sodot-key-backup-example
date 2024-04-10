@@ -22,9 +22,6 @@ async function callKeygen({ sigAlgo, userId, roomId, clientKeygenId, initKeygenR
   const mpcSigner = getMpcSigner(sigAlgo);
   // Create a key together with the client!
   const keygenResult = await mpcSigner.keygen(roomId, N, T, initKeygenResult, [clientKeygenId]);
-  const pubkey =
-    sigAlgo === SignatureAlgorithmName.ECDSA ? keygenResult.pubkey.serializeCompressed() : keygenResult.pubkey;
-  console.log(`Server keygen result - PUB:${pubkey} ;; SECRET:${keygenResult.secretShare}`);
   // Store the server's secret share in our cache, to act as a "storage".
   const serverShareCacheKey = generateServerShareCacheKey(userId, sigAlgo);
   serverShareCache.set(serverShareCacheKey, keygenResult);

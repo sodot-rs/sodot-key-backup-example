@@ -4,6 +4,9 @@ import type { EcdsaKeygenResult, Ed25519KeygenResult } from '@sodot/sodot-node-s
 import { Ecdsa, Ed25519 } from '@sodot/sodot-node-sdk-demo';
 import 'dotenv/config';
 
+/**
+ * The Sodot API key.
+ */
 export const API_KEY: string = process.env.API_KEY || '';
 
 const mpcSigners = {
@@ -17,6 +20,11 @@ export function getMpcSigner(signature: SignatureAlgorithmName) {
 
 export type ServerShare = EcdsaKeygenResult | Ed25519KeygenResult;
 
+/**
+ * Create a new room to facilitate communication between all players.
+ * @param signature the signature scheme to use.
+ * @returns newely created roomId.
+ */
 export async function createRoom(signature: SignatureAlgorithmName) {
   const mpcSigner = getMpcSigner(signature);
   return await mpcSigner.createRoom(N, API_KEY);

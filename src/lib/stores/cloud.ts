@@ -126,6 +126,7 @@ export async function getBackupFile(): Promise<BackupData | InvalidData | null> 
 /**
  * A typeguard that checks if the data is invalid or not.
  * Should only be used in conjunction with {@link getBackupFile}.
+ * NOTE: the only reason data could be invalid is if the TTL cache this specific demo server is using has cleared its share.
  * @param backupData data to test for validity.
  */
 export function isBackupDataInvalid(backupData: BackupData | InvalidData): backupData is InvalidData {

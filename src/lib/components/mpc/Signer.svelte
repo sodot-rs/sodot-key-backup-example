@@ -20,38 +20,36 @@
       throw new Error('Cannot sign messages without a prepared key');
     }
     const mpcSigner = mpcSigners[$userData?.sigAlgo];
-    // We pick a derivation path - this uses standard non-hardened key derivation
+    // We pick a derivation path - this uses standard non-hardened key derivation.
     // Using key derivation paths we can have as many public keys as we want generated from just a single keygen session.
     const derivationPath = new Uint32Array(DERIVATION_PATH_ARRAY);
 
-    // You can verify the signature over at https://etherscan.io/verifiedSignatures#
+    // You can verify the signature over at https://etherscan.io/verifiedSignatures
     const formattedMessage =
       $userData?.sigAlgo === SignatureAlgorithmName.ECDSA
         ? `\x19Ethereum Signed Message:\n${message.length}${message}`
         : message;
 
+    // Ask the server to sign the key - again, getting the roomId in the response.
     const response = await fetch(
       `/api/sign/${$userData.userId}/${$userData.sigAlgo}/${formattedMessage}/${JSON.stringify(DERIVATION_PATH_ARRAY)}`
     );
     const responseData = await response.json();
-    console.log('signingRoomUuid:', responseData.roomId);
 
-    // Now we sign
     let messageToSign: string | MessageHash = message;
     if ($userData.sigAlgo === SignatureAlgorithmName.ECDSA) {
       // For ecdsa, signing requires a hashed message, while ed25519 requires the raw message
       messageToSign = MessageHash.keccak256(formattedMessage);
     }
 
-    console.log('SIGNING', messageToSign);
+    // Now we sign the message together!
     let signature = await mpcSigner.sign(responseData.roomId, $userData.keygenResult, messageToSign, derivationPath);
     if ($userData.sigAlgo === SignatureAlgorithmName.ECDSA) {
-      const s = signature as EcdsaSignature; // Purely to convince TS that this is indeed an EcdsaSignature object.
-      messageSignature = hexlify(s.r).slice(2) + hexlify(s.s).slice(2) + s.v.toString(16);
+      const ecdsaSig = signature as EcdsaSignature; // Purely to convince TS that this is indeed an EcdsaSignature object.
+      messageSignature = hexlify(ecdsaSig.r).slice(2) + hexlify(ecdsaSig.s).slice(2) + ecdsaSig.v.toString(16);
     } else {
       messageSignature = (signature as Uint8Array).toString();
     }
-    console.log(`Successfully created a signature together with the server: ${messageSignature}`);
   }
 </script>
 

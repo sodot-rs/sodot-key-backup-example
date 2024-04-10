@@ -14,6 +14,7 @@
   $: logoSize = $isMobile ? 'size-1/3' : 'size-1/6';
 
   onMount(() => {
+    // Set up a media query to handle mobile devices.
     const mediaQuery = window.matchMedia('(max-width: 800px)');
     $isMobile = mediaQuery.matches;
     const handleResize = () => {
