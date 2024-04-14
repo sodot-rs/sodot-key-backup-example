@@ -1,6 +1,6 @@
 # Example Client-Server WebApp With Key Backup Using the Sodot MPC SDK
 
-This is a minimal example project the showcases one way you can leverage the Sodot MPC SDK to create distributed private keys for both ECDSA (on secp256k1) and Ed25591 signature algorithms, and threshold signing using MPC, as well as simulating a key backup and recovery process for ease of use.
+This is a minimal example project that showcases one way you can leverage the Sodot MPC SDK to create distributed private keys for both ECDSA (on secp256k1) and Ed25591 signature algorithms, and threshold signing using MPC, as well as simulating a key backup and recovery process for ease of use.
 
 More information on the Sodot MPC SDK can be found in Sodot's [technical docs](https://docs.sodot.dev/docs/intro).
 
@@ -57,3 +57,9 @@ This project uses [SvelteKit](https://kit.svelte.dev/) for a unified front-end a
   - For the client - under the [`mpc` components](./src/lib/components/mpc) directory. These components use the `@sodot/sodot-web-sdk-demo` package, which contains bindings for the browser.
   - For the server - under the various [`api` routes](./src/routes/api) that allow the user and the server to communicate. These components use the `@sodot/sodot-node-sdk-demo` package, which contains bindings for node.
 - The rest of the code is mainly for handling the UI and navigation.
+
+## Setting Up Google Integration
+
+To set up your Google API **client ID** and enable OAuth, follow [this guide](https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid) which will walk you through the steps in your Google console (`drive.appdata` is the only scope required).
+Once you have created your **client ID**, you can look at our [reference implementation](./src/lib/components/backup/GDrive.svelte) to see how to prompt the user for permission and authorization of the relevant API calls.
+Notice we only request access to the `drive.appdata` scope (application specific data, can't interact with user data), in addition to the fact that we utilize the "implicit grant flow" - which means the OAuth process never goes through any server besides Google's, therefore the server doesn't even know the identity (i.e. the Google account) of the user or any other metadata about the user account.
