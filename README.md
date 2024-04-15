@@ -61,5 +61,7 @@ This project uses [SvelteKit](https://kit.svelte.dev/) for a unified front-end a
 ## Setting Up Google Integration
 
 To set up your Google API **client ID** and enable OAuth, follow [this guide](https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid) which will walk you through the steps in your Google console (`drive.appdata` is the only scope required).
+
 Once you have created your **client ID**, you can look at our [reference implementation](./src/lib/components/backup/GDrive.svelte) to see how to prompt the user for permission and authorization of the relevant API calls.
-Notice we only request access to the `drive.appdata` scope (application specific data, can't interact with user data), in addition to the fact that we utilize the "implicit grant flow" - which means the OAuth process never goes through any server besides Google's, therefore the server doesn't even know the identity (i.e. the Google account) of the user or any other metadata about the user account.
+
+Notice we only request access to the `drive.appdata` scope (application specific data, can't interact with user data), in addition to the fact that we utilize the "implicit grant flow" - which means the OAuth process never goes through any server besides Google's. Therefore the server doesn't even know the identity (i.e. the Google account) of the user or any other metadata about the user account.
